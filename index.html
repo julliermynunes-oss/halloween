@@ -232,6 +232,37 @@
             backdrop-filter: blur(10px);
         }
 
+        #admin-access {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 3rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        #admin-access h3 {
+            color: var(--accent-orange);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        #admin-access p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        #admin-access code {
+            background: var(--secondary-bg);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            color: var(--accent-green);
+            font-family: monospace;
+        }
+
         #admin-panel h2 {
             font-family: 'Creepster', cursive;
             font-size: 2.5rem;
@@ -930,6 +961,20 @@
         <div id="costumes-container" class="costumes-grid">
             </div>
 
+        <!-- Acesso Administrativo -->
+        <div id="admin-access">
+            <h3>🔐 Acesso Administrativo</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                Digite a senha para acessar o painel administrativo
+            </p>
+            <div class="form-group">
+                <label for="admin-password">Senha do Admin:</label>
+                <input type="password" id="admin-password" placeholder="Digite a senha para acessar o painel" 
+                       style="width: 100%; padding: 0.875rem 1rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--secondary-bg); color: var(--text-primary); font-size: 1rem; text-align: center;">
+            </div>
+            <button type="button" id="admin-login-btn" class="btn-results" style="margin-top: 1rem;">🔓 Acessar Painel Admin</button>
+        </div>
+
         <div id="admin-panel">
             <h2>Painel de Administração</h2>
             <div id="storage-info" style="background: var(--secondary-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;">
@@ -979,6 +1024,7 @@
                     <button type="button" id="show-results-btn">Mostrar Resultados Finais</button>
                     <button type="button" id="clear-storage-btn">Limpar Armazenamento</button>
                     <button type="button" id="reset-votes-btn">Resetar Tudo</button>
+                    <button type="button" id="logout-admin-btn" style="background: linear-gradient(45deg, #e74c3c, #c0392b);">🚪 Sair do Admin</button>
                 </div>
                 
                 <div style="margin-top: 2rem; padding: 1.5rem; background: var(--secondary-bg); border-radius: 12px; border: 1px solid var(--border-color);">
@@ -1123,6 +1169,7 @@
         let isAdminMode = false;
         let currentVoter = null;
         let voterVotes = {}; // Armazenar votos por votante
+        const ADMIN_PASSWORD = 'festa'; // Senha do admin
 
         function loadData() {
             const storedData = localStorage.getItem(STORAGE_KEY);
@@ -1131,14 +1178,17 @@
                     const data = JSON.parse(storedData);
                     costumes = data.costumes || [];
                     voterVotes = data.voterVotes || {};
+                    isAdminMode = data.isAdminMode || false;
                     // Limpar dados antigos se necessário
                     cleanupOldData();
                 } catch (error) {
                     console.error('Erro ao carregar dados:', error);
                     costumes = [];
                     voterVotes = {};
+                    isAdminMode = false;
                 }
             }
+            updateAdminPanelVisibility();
         }
 
         function cleanupOldData() {
@@ -1190,7 +1240,8 @@
             try {
                 const dataToSave = JSON.stringify({
                     costumes: costumes,
-                    voterVotes: voterVotes
+                    voterVotes: voterVotes,
+                    isAdminMode: isAdminMode
                 });
                 const dataSize = new Blob([dataToSave]).size;
                 const maxSize = 5 * 1024 * 1024; // 5MB limit para metadados (aumentado)
@@ -1235,6 +1286,41 @@
                     messageDiv.remove();
                 }
             }, 3000);
+        }
+
+        function checkAdminPassword() {
+            const password = document.getElementById('admin-password').value.trim();
+            
+            if (password === ADMIN_PASSWORD) {
+                isAdminMode = true;
+                document.getElementById('admin-password').value = '';
+                saveData();
+                updateAdminPanelVisibility();
+                showMessage('Acesso administrativo concedido!', 'success');
+            } else {
+                showMessage('Senha incorreta! Tente novamente.', 'error');
+                document.getElementById('admin-password').value = '';
+            }
+        }
+
+        function updateAdminPanelVisibility() {
+            const adminPanel = document.getElementById('admin-panel');
+            const adminAccess = document.getElementById('admin-access');
+            
+            if (isAdminMode) {
+                adminPanel.style.display = 'block';
+                adminAccess.style.display = 'none';
+            } else {
+                adminPanel.style.display = 'none';
+                adminAccess.style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminMode = false;
+            saveData();
+            updateAdminPanelVisibility();
+            showMessage('Logout realizado! Painel administrativo oculto.', 'info');
         }
 
         function updateVoterStatus() {
@@ -2305,6 +2391,10 @@
                 hideVoterModal();
             }
         });
+
+        // Event listeners para autenticação administrativa
+        document.getElementById('admin-login-btn').addEventListener('click', checkAdminPassword);
+        document.getElementById('logout-admin-btn').addEventListener('click', logoutAdmin);
 
         // Event listeners para compartilhamento de dados
         exportDataBtn.addEventListener('click', exportData);

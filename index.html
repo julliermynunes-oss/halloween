@@ -139,6 +139,104 @@
             display: block;
         }
 
+        .general-results {
+            background: var(--secondary-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .general-results.show {
+            display: block;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-orange);
+            margin: 0;
+        }
+
+        .results-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .result-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .result-rank {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .result-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+        }
+
+        .result-info {
+            flex: 1;
+        }
+
+        .result-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .result-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-votes {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            background: rgba(6, 214, 160, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--accent-green);
+        }
+
+        .no-results {
+            text-align: center;
+            color: var(--text-secondary);
+            font-style: italic;
+            padding: 2rem;
+        }
+
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -180,11 +278,16 @@
         }
 
         .admin-buttons {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
             margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .admin-buttons {
+                grid-template-columns: 1fr;
+            }
         }
 
         .costumes-grid {
@@ -528,6 +631,74 @@
             border: 2px solid #3498db;
         }
 
+        /* Pop-up de mensagem */
+        .popup-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            border: 3px solid var(--accent-orange);
+            border-radius: 15px;
+            padding: 2rem;
+            z-index: 10000;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            min-width: 300px;
+            max-width: 500px;
+            animation: popupSlideIn 0.3s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        .popup-message.success {
+            border-color: #06d6a0;
+            background: linear-gradient(135deg, rgba(6, 214, 160, 0.3), rgba(6, 214, 160, 0.1));
+            box-shadow: 0 20px 60px rgba(6, 214, 160, 0.3);
+        }
+
+        .popup-message.error {
+            border-color: #ff4757;
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.3), rgba(255, 71, 87, 0.1));
+            box-shadow: 0 20px 60px rgba(255, 71, 87, 0.3);
+        }
+
+        .popup-message.info {
+            border-color: #3498db;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(52, 152, 219, 0.1));
+            box-shadow: 0 20px 60px rgba(52, 152, 219, 0.3);
+        }
+
+        .popup-message h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            font-weight: 700;
+        }
+
+        .popup-message p {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+            font-weight: 500;
+        }
+
+        .popup-message .btn {
+            margin: 0 0.5rem;
+        }
+
+        @keyframes popupSlideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
         .loading {
             text-align: center;
             padding: 2rem;
@@ -547,6 +718,32 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes spotlightPulse {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1);
+            }
         }
 
         @media (max-width: 768px) {
@@ -599,6 +796,9 @@
         <!-- Painel Administrativo -->
         <div class="admin-panel" id="admin-panel">
             <h3>🎭 Painel Administrativo</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center; font-size: 0.9rem;">
+                💡 <strong>Dica:</strong> Após todos votarem, clique em "Ver Resultados" para revelar o pódio!
+            </p>
             
             <div class="form-group">
                 <label for="costume-name">Nome da Fantasia:</label>
@@ -621,8 +821,21 @@
             <div class="admin-buttons">
                 <button class="btn" id="add-costume-btn">➕ Adicionar Fantasia</button>
                 <button class="btn btn-secondary" id="show-results-btn">🏆 Ver Resultados</button>
+                <button class="btn btn-secondary" id="toggle-general-results-btn">📊 Resultados Gerais</button>
+                <button class="btn btn-danger" id="clear-votes-btn">🗳️ Limpar Votos</button>
                 <button class="btn btn-danger" id="clear-all-btn">🗑️ Limpar Tudo</button>
                 <button class="btn btn-danger" id="logout-admin-btn">🚪 Sair do Admin</button>
+            </div>
+
+            <!-- Seção de Resultados Gerais -->
+            <div class="general-results" id="general-results">
+                <div class="results-header">
+                    <h3 class="results-title">📊 Resultados Gerais da Votação</h3>
+                    <button class="btn btn-secondary" id="refresh-results-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">🔄 Atualizar</button>
+                </div>
+                <div class="results-list" id="results-list">
+                    <!-- Os resultados serão inseridos aqui via JavaScript -->
+                </div>
             </div>
         </div>
 
@@ -645,9 +858,6 @@
             <img id="modal-image" class="modal-image" src="" alt="">
             <div class="modal-info">
                 <div id="modal-description" style="margin-bottom: 15px; font-size: 1rem; line-height: 1.5; color: rgba(255, 255, 255, 0.9);"></div>
-                <div class="modal-votes">
-                    Votos: <span id="modal-votes">0</span>
-                </div>
                 <div class="modal-instructions">
                     Clique na imagem para ampliar • Clique fora para fechar
                 </div>
@@ -732,6 +942,8 @@
         const imageModal = document.getElementById('image-modal');
         const voterModal = document.getElementById('voter-modal');
         const resultsScreen = document.getElementById('results-screen');
+        const generalResults = document.getElementById('general-results');
+        const resultsList = document.getElementById('results-list');
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
@@ -749,6 +961,9 @@
             // Admin
             document.getElementById('add-costume-btn').addEventListener('click', addCostume);
             document.getElementById('show-results-btn').addEventListener('click', showResults);
+            document.getElementById('toggle-general-results-btn').addEventListener('click', toggleGeneralResults);
+            document.getElementById('refresh-results-btn').addEventListener('click', refreshGeneralResults);
+            document.getElementById('clear-votes-btn').addEventListener('click', clearVotes);
             document.getElementById('clear-all-btn').addEventListener('click', clearAll);
 
             // Votante
@@ -800,7 +1015,7 @@
             showMessage('Logout realizado!', 'info');
         }
 
-        function confirmVoter() {
+        async function confirmVoter() {
             const voterName = document.getElementById('voter-name').value.trim();
             
             if (!voterName) {
@@ -808,11 +1023,43 @@
                 return;
             }
 
-            currentVoter = voterName;
-            voterVotes = {};
-            hideVoterModal();
-            updateUI();
-            showMessage(`Bem-vindo, ${voterName}! Você pode votar em até 3 fantasias.`, 'success');
+            try {
+                // Verificar se a pessoa já votou
+                const voterDoc = await db.collection('voters').doc(voterName).get();
+                
+                if (voterDoc.exists) {
+                    const voterData = voterDoc.data();
+                    if (voterData.votes && voterData.votes.length > 0) {
+                        showMessage(`Você já votou! Você votou em ${voterData.votes.length} fantasia${voterData.votes.length > 1 ? 's' : ''}. Não é possível votar novamente.`, 'error');
+                        hideVoterModal();
+                        return;
+                    }
+                }
+
+                currentVoter = voterName;
+                
+                // Carregar votos existentes se houver
+                if (voterDoc.exists) {
+                    const voterData = voterDoc.data();
+                    voterVotes[currentVoter] = voterData.votes || [];
+                } else {
+                    voterVotes = {};
+                }
+                
+                hideVoterModal();
+                updateUI();
+                renderCostumes(); // Re-renderizar para atualizar os botões
+                
+                const votesUsed = voterVotes[currentVoter] ? voterVotes[currentVoter].length : 0;
+                if (votesUsed > 0) {
+                    showMessage(`Bem-vindo de volta, ${voterName}! Você já votou em ${votesUsed} fantasia${votesUsed > 1 ? 's' : ''}.`, 'info');
+                } else {
+                    showMessage(`Bem-vindo, ${voterName}! Você pode votar em até 3 fantasias.`, 'success');
+                }
+            } catch (error) {
+                console.error('Erro ao verificar votante:', error);
+                showMessage('Erro ao verificar dados. Tente novamente.', 'error');
+            }
         }
 
         function hideVoterModal() {
@@ -872,22 +1119,64 @@
             }
         }
 
-        async function clearAll() {
-            if (confirm('Tem certeza que deseja limpar todas as fantasias? Esta ação não pode ser desfeita!')) {
+        async function clearVotes() {
+            if (confirm('Tem certeza que deseja limpar todos os votos? As fantasias serão mantidas, mas todos os votos serão zerados e as pessoas poderão votar novamente.')) {
                 try {
-                    const snapshot = await db.collection('costumes').get();
+                    // Limpar votos das fantasias
+                    const costumesSnapshot = await db.collection('costumes').get();
                     const batch = db.batch();
                     
-                    snapshot.docs.forEach(doc => {
+                    costumesSnapshot.docs.forEach(doc => {
+                        batch.update(doc.ref, { votes: 0 });
+                    });
+                    
+                    // Limpar dados dos votantes
+                    const votersSnapshot = await db.collection('voters').get();
+                    votersSnapshot.docs.forEach(doc => {
                         batch.delete(doc.ref);
                     });
                     
                     await batch.commit();
-                    showMessage('Todas as fantasias foram removidas!', 'success');
+                    
+                    // Limpar votos locais também
+                    voterVotes = {};
+                    
+                    showMessage('Todos os votos foram limpos! As fantasias foram mantidas e as pessoas podem votar novamente.', 'success');
                     loadCostumes();
                 } catch (error) {
-                    console.error('Erro ao limpar fantasias:', error);
-                    showMessage('Erro ao limpar fantasias. Tente novamente.', 'error');
+                    console.error('Erro ao limpar votos:', error);
+                    showMessage('Erro ao limpar votos. Tente novamente.', 'error');
+                }
+            }
+        }
+
+        async function clearAll() {
+            if (confirm('Tem certeza que deseja limpar todas as fantasias e votos? Esta ação não pode ser desfeita!')) {
+                try {
+                    // Limpar fantasias
+                    const costumesSnapshot = await db.collection('costumes').get();
+                    const batch = db.batch();
+                    
+                    costumesSnapshot.docs.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    
+                    // Limpar dados dos votantes
+                    const votersSnapshot = await db.collection('voters').get();
+                    votersSnapshot.docs.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    
+                    await batch.commit();
+                    
+                    // Limpar dados locais
+                    voterVotes = {};
+                    
+                    showMessage('Todas as fantasias e votos foram removidos!', 'success');
+                    loadCostumes();
+                } catch (error) {
+                    console.error('Erro ao limpar tudo:', error);
+                    showMessage('Erro ao limpar dados. Tente novamente.', 'error');
                 }
             }
         }
@@ -911,6 +1200,10 @@
                 });
                 console.log('Fantasias carregadas:', costumes);
                 renderCostumes();
+                // Atualizar resultados gerais se estiverem visíveis
+                if (generalResults.classList.contains('show')) {
+                    refreshGeneralResults();
+                }
             }, error => {
                 console.error('Erro ao carregar fantasias do Firestore:', error);
                 // Fallback: carregar do localStorage
@@ -957,8 +1250,9 @@
                 const votesUsed = currentVoter ? (voterVotes[currentVoter] || []).length : 0;
                 const votesRemaining = 3 - votesUsed;
                 
+                
                 let buttonState = '';
-                let buttonText = `👍 Votar (${costume.votes})`;
+                let buttonText = '👍 Votar';
                 
                 if (!currentVoter) {
                     buttonState = 'disabled';
@@ -979,7 +1273,6 @@
                     <div class="costume-info">
                         <h3 class="costume-name">${costume.name}${isOwnCostume ? ' <span style="color: var(--accent-orange); font-size: 0.8em;">(Sua fantasia)</span>' : ''}</h3>
                         ${costume.description ? `<p class="costume-description">${costume.description}</p>` : ''}
-                        <p class="vote-count">Votos: <span id="votes-${costume.id}">${costume.votes}</span></p>
                         ${currentVoter ? `<p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Votos restantes: ${votesRemaining}</p>` : ''}
                         <button class="btn-vote" data-id="${costume.id}" ${buttonState}>${buttonText}</button>
                         ${isAdminMode ? `<button class="btn btn-danger" onclick="deleteCostume('${costume.id}')" style="margin-top: 0.5rem; width: 100%;">🗑️ Excluir</button>` : ''}
@@ -1051,7 +1344,25 @@
                 }
                 voterVotes[currentVoter].push(costumeId);
 
-                showMessage(`Voto registrado para ${costume.name}!`, 'success');
+                // Salvar votos do votante no Firestore para persistência
+                await db.collection('voters').doc(currentVoter).set({
+                    name: currentVoter,
+                    votes: voterVotes[currentVoter],
+                    votedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                // Atualizar interface imediatamente
+                renderCostumes();
+                updateVoterStatus();
+
+                const votesUsed = voterVotes[currentVoter].length;
+                const votesRemaining = 3 - votesUsed;
+                
+                if (votesRemaining > 0) {
+                    showMessage(`Voto registrado para ${costume.name}! Você ainda tem ${votesRemaining} voto${votesRemaining > 1 ? 's' : ''} restante${votesRemaining > 1 ? 's' : ''}.`, 'success');
+                } else {
+                    showMessage(`Voto registrado para ${costume.name}! Você usou todos os seus 3 votos!`, 'success');
+                }
             } catch (error) {
                 console.error('Erro ao votar:', error);
                 showMessage('Erro ao registrar voto. Tente novamente.', 'error');
@@ -1080,10 +1391,21 @@
                 authSection.style.display = 'none';
                 adminPanel.style.display = 'none';
                 voterStatus.classList.add('show');
+                // Ocultar resultados gerais quando sair do modo admin
+                generalResults.classList.remove('show');
+                document.getElementById('toggle-general-results-btn').textContent = '📊 Resultados Gerais';
             } else {
                 authSection.style.display = 'block';
                 voterStatus.style.display = 'none';
                 adminPanel.style.display = 'none';
+                // Ocultar resultados gerais quando sair do modo admin
+                generalResults.classList.remove('show');
+                document.getElementById('toggle-general-results-btn').textContent = '📊 Resultados Gerais';
+            }
+            
+            // Re-renderizar fantasias para atualizar botões de voto
+            if (costumes.length > 0) {
+                renderCostumes();
             }
         }
 
@@ -1101,7 +1423,7 @@
             document.getElementById('modal-image').src = costume.imageUrl;
             document.getElementById('modal-title').textContent = costume.name;
             document.getElementById('modal-description').textContent = costume.description || '';
-            document.getElementById('modal-votes').textContent = costume.votes;
+            // Removido: exibição de votos para evitar viés
             imageModal.classList.add('show');
         }
 
@@ -1119,6 +1441,55 @@
             createPodium();
         }
 
+        function toggleGeneralResults() {
+            if (generalResults.classList.contains('show')) {
+                generalResults.classList.remove('show');
+                document.getElementById('toggle-general-results-btn').textContent = '📊 Resultados Gerais';
+            } else {
+                generalResults.classList.add('show');
+                document.getElementById('toggle-general-results-btn').textContent = '📊 Ocultar Resultados';
+                refreshGeneralResults();
+            }
+        }
+
+        function refreshGeneralResults() {
+            if (costumes.length === 0) {
+                resultsList.innerHTML = `
+                    <div class="no-results">
+                        <p>Nenhuma fantasia cadastrada ainda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Ordenar fantasias por número de votos (decrescente)
+            const sortedCostumes = [...costumes].sort((a, b) => b.votes - a.votes);
+            
+            resultsList.innerHTML = '';
+            
+            sortedCostumes.forEach((costume, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                
+                const rank = index + 1;
+                const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}º`;
+                
+                resultItem.innerHTML = `
+                    <div class="result-rank">${medal}</div>
+                    <img src="${costume.imageUrl}" alt="${costume.name}" class="result-image" loading="lazy">
+                    <div class="result-info">
+                        <div class="result-name">${costume.name}</div>
+                        ${costume.description ? `<div class="result-description">${costume.description}</div>` : ''}
+                    </div>
+                    <div class="result-votes">
+                        ${costume.votes} voto${costume.votes !== 1 ? 's' : ''}
+                    </div>
+                `;
+                
+                resultsList.appendChild(resultItem);
+            });
+        }
+
         function hideResults() {
             resultsScreen.classList.remove('show');
         }
@@ -1128,29 +1499,87 @@
             const podiumContainer = document.getElementById('podium-container');
             podiumContainer.innerHTML = '';
 
-            // Criar pódio com animação dramática
-            setTimeout(() => {
+            // Criar botões de revelação
+            const revealContainer = document.createElement('div');
+            revealContainer.style.textAlign = 'center';
+            revealContainer.style.marginBottom = '2rem';
+            
+            revealContainer.innerHTML = `
+                <h2 style="color: var(--text-primary); margin-bottom: 2rem; font-size: 2rem;">
+                    🎭 REVELAÇÃO DOS VENCEDORES 🎭
+                </h2>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.2rem;">
+                    Clique nos botões para revelar cada posição!
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" id="reveal-third-btn" style="min-width: 200px;">
+                        🥉 Revelar 3º Lugar
+                    </button>
+                    <button class="btn btn-secondary" id="reveal-second-btn" style="min-width: 200px;">
+                        🥈 Revelar 2º Lugar
+                    </button>
+                    <button class="btn" id="reveal-first-btn" style="min-width: 200px;">
+                        🥇 Revelar 1º Lugar
+                    </button>
+                </div>
+            `;
+            
+            podiumContainer.appendChild(revealContainer);
+
+            // Adicionar event listeners para os botões
+            document.getElementById('reveal-third-btn').addEventListener('click', () => {
                 if (sortedCostumes[2]) {
+                    playDrumSound();
+                    createSpotlightEffect();
                     createPodiumPlace(sortedCostumes[2], 'third', '🥉');
+                    document.getElementById('reveal-third-btn').style.display = 'none';
                 }
-            }, 1000);
+            });
 
-            setTimeout(() => {
+            document.getElementById('reveal-second-btn').addEventListener('click', () => {
                 if (sortedCostumes[1]) {
+                    playDrumSound();
+                    createSpotlightEffect();
                     createPodiumPlace(sortedCostumes[1], 'second', '🥈');
+                    document.getElementById('reveal-second-btn').style.display = 'none';
                 }
-            }, 3000);
+            });
 
-            setTimeout(() => {
+            document.getElementById('reveal-first-btn').addEventListener('click', () => {
                 if (sortedCostumes[0]) {
+                    playVictorySound();
+                    createSpotlightEffect();
                     createPodiumPlace(sortedCostumes[0], 'first', '🥇');
+                    createConfetti();
+                    document.getElementById('reveal-first-btn').style.display = 'none';
+                    
+                    // Mostrar mensagem final
+                    setTimeout(() => {
+                        const finalMessage = document.createElement('div');
+                        finalMessage.style.textAlign = 'center';
+                        finalMessage.style.marginTop = '2rem';
+                        finalMessage.style.padding = '1rem';
+                        finalMessage.style.background = 'linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 53, 0.2))';
+                        finalMessage.style.borderRadius = '15px';
+                        finalMessage.style.border = '2px solid #ffd700';
+                        finalMessage.innerHTML = `
+                            <h3 style="color: #ffd700; margin-bottom: 0.5rem;">🏆 PARABÉNS AOS VENCEDORES! 🏆</h3>
+                            <p style="color: var(--text-primary); font-size: 1.1rem;">
+                                Obrigado a todos por participarem da votação de Halloween!
+                            </p>
+                        `;
+                        podiumContainer.appendChild(finalMessage);
+                    }, 2000);
                 }
-            }, 5000);
+            });
         }
 
         function createPodiumPlace(costume, position, medal) {
             const podiumPlace = document.createElement('div');
             podiumPlace.className = 'podium-place';
+            podiumPlace.style.opacity = '0';
+            podiumPlace.style.transform = 'scale(0.5) translateY(50px)';
+            podiumPlace.style.transition = 'all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
             
             podiumPlace.innerHTML = `
                 <div class="podium-stand ${position}">
@@ -1162,6 +1591,12 @@
             `;
             
             document.getElementById('podium-container').appendChild(podiumPlace);
+            
+            // Animar entrada
+            setTimeout(() => {
+                podiumPlace.style.opacity = '1';
+                podiumPlace.style.transform = 'scale(1) translateY(0)';
+            }, 100);
         }
 
         function shareResults() {
@@ -1196,21 +1631,156 @@
             }
         }
 
-        function showMessage(message, type) {
+        function showMessage(message, type, isPopup = true) {
+            // Remover mensagens existentes
             const existingMessage = document.querySelector('.message');
             if (existingMessage) {
                 existingMessage.remove();
             }
+            const existingPopup = document.querySelector('.popup-message');
+            if (existingPopup) {
+                existingPopup.remove();
+            }
 
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            messageDiv.textContent = message;
+            if (isPopup) {
+                // Criar pop-up
+                const popupDiv = document.createElement('div');
+                popupDiv.className = `popup-message ${type}`;
+                
+                const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+                const title = type === 'success' ? 'Sucesso!' : type === 'error' ? 'Erro!' : 'Informação';
+                
+                popupDiv.innerHTML = `
+                    <h3>${icon} ${title}</h3>
+                    <p>${message}</p>
+                    <button class="btn" onclick="this.parentElement.remove()">OK</button>
+                `;
+                
+                document.body.appendChild(popupDiv);
+                
+                // Auto-remover após 5 segundos
+                setTimeout(() => {
+                    if (popupDiv.parentElement) {
+                        popupDiv.remove();
+                    }
+                }, 5000);
+            } else {
+                // Mensagem tradicional (para casos especiais)
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                messageDiv.textContent = message;
+                
+                document.querySelector('.container').insertBefore(messageDiv, document.querySelector('.header').nextSibling);
+                
+                setTimeout(() => {
+                    messageDiv.remove();
+                }, 3000);
+            }
+        }
+
+        // Funções de som e efeitos
+        function playDrumSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(100, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 0.3);
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                console.log('Erro ao reproduzir som:', e);
+            }
+        }
+
+        function playVictorySound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Melodia de vitória
+                const frequencies = [523, 659, 784, 1047]; // C, E, G, C
+                frequencies.forEach((freq, index) => {
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + index * 0.2);
+                });
+                
+                gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.8);
+            } catch (e) {
+                console.log('Erro ao reproduzir som de vitória:', e);
+            }
+        }
+
+        function createSpotlightEffect() {
+            const spotlight = document.createElement('div');
+            spotlight.style.position = 'fixed';
+            spotlight.style.top = '0';
+            spotlight.style.left = '0';
+            spotlight.style.width = '100%';
+            spotlight.style.height = '100%';
+            spotlight.style.background = 'radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.8) 70%)';
+            spotlight.style.pointerEvents = 'none';
+            spotlight.style.zIndex = '9998';
+            spotlight.style.animation = 'spotlightPulse 1s ease-out';
             
-            document.querySelector('.container').insertBefore(messageDiv, document.querySelector('.header').nextSibling);
+            document.body.appendChild(spotlight);
             
             setTimeout(() => {
-                messageDiv.remove();
-            }, 3000);
+                spotlight.remove();
+            }, 1000);
+        }
+
+        function createConfetti() {
+            const confettiContainer = document.createElement('div');
+            confettiContainer.style.position = 'fixed';
+            confettiContainer.style.top = '0';
+            confettiContainer.style.left = '0';
+            confettiContainer.style.width = '100%';
+            confettiContainer.style.height = '100%';
+            confettiContainer.style.pointerEvents = 'none';
+            confettiContainer.style.zIndex = '9999';
+            
+            document.body.appendChild(confettiContainer);
+            
+            // Criar confetes
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'absolute';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = ['#ff6b35', '#9d4edd', '#06d6a0', '#ffd700', '#ff4757'][Math.floor(Math.random() * 5)];
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.animation = `confettiFall ${2 + Math.random() * 3}s linear forwards`;
+                    
+                    confettiContainer.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 50);
+            }
+            
+            setTimeout(() => {
+                confettiContainer.remove();
+            }, 8000);
         }
     </script>
 </body>
